@@ -24,7 +24,7 @@ node_modules
 *.sw?
 
 # Environment variables
-.env
+# .env
 .env.production
 .env.local
 .env.*.local
