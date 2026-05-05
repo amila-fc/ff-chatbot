@@ -25,12 +25,17 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 
-const AGENT_URL = import.meta.env.VITE_AGENT_URL;
-const AGENT_KEY = import.meta.env.VITE_AGENT_KEY;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const ChatArea = () => {
   const [messages, setMessages] = useState([
-    { id: 1, sender: 'AI Chatbot', text: 'Hello! I am your DigitalOcean AI assistant. How can I help you today?', time: '12:45 PM', isBot: true },
+    { 
+      id: 1, 
+      sender: 'AI Chatbot', 
+      text: 'Hello! I am your Star Concord AI assistant. How can I help you today?', 
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), 
+      isBot: true 
+    },
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -70,17 +75,11 @@ const ChatArea = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${AGENT_URL}/api/v1/chat/completions`, {
+      const response = await axios.post(BACKEND_URL, {
         messages: updatedMessages.map(m => ({
           role: m.isBot ? 'assistant' : 'user',
           content: m.text
-        })),
-        stream: false,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${AGENT_KEY}`,
-          'Content-Type': 'application/json'
-        }
+        }))
       });
 
       const botText = response.data.choices[0].message.content;
@@ -95,11 +94,11 @@ const ChatArea = () => {
 
       setMessages(prev => [...prev, botMsg].slice(-30));
     } catch (error) {
-      console.error('API Error:', error);
+      console.error('Backend Error:', error);
       const errorMsg = {
         id: Date.now() + 1,
         sender: 'System',
-        text: 'Sorry, I encountered an error connecting to the agent. Please check your configuration.',
+        text: 'Sorry, I encountered an error connecting to the backend router. Please ensure the server is running.',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         isBot: true,
         isError: true
@@ -155,7 +154,7 @@ const ChatArea = () => {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <Avatar sx={{ bgcolor: '#6264A7', width: 32, height: 32 }}>AI</Avatar>
           <Box>
-            <Typography variant="subtitle1" sx={{ fontWeight: 700, lineHeight: 1.2 }}>DigitalOcean Agent</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 700, lineHeight: 1.2 }}>Star Concord Agent</Typography>
             <Typography variant="caption" sx={{ color: '#00B0F0', display: 'flex', alignItems: 'center', gap: 0.5 }}>
               <Box sx={{ width: 8, height: 8, bgcolor: '#00B0F0', borderRadius: '50%' }} /> Active
             </Typography>
@@ -232,7 +231,7 @@ const ChatArea = () => {
       </Box>
 
       {/* Input */}
-      <Box sx={{ p: 2, borderTop: '1px solid #3B3B3B' }}>
+      <Box sx={{ p: 2, pt: 1, borderTop: '1px solid #3B3B3B' }}>
         <Paper
           elevation={0}
           sx={{
@@ -240,14 +239,15 @@ const ChatArea = () => {
             bgcolor: '#2B2B2B',
             borderRadius: 2,
             border: '1px solid #3B3B3B',
-            '&:focus-within': { borderColor: '#6264A7' }
+            '&:focus-within': { borderColor: '#6264A7' },
+            mb: 1
           }}
         >
           <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-             <IconButton size="small" sx={{ color: '#ADADAD' }}><Type size={16} /></IconButton>
+             {/* <IconButton size="small" sx={{ color: '#ADADAD' }}><Type size={16} /></IconButton>
              <IconButton size="small" sx={{ color: '#ADADAD' }}><Paperclip size={16} /></IconButton>
              <IconButton size="small" sx={{ color: '#ADADAD' }}><Smile size={16} /></IconButton>
-             <IconButton size="small" sx={{ color: '#ADADAD' }}><ImageIcon size={16} /></IconButton>
+             <IconButton size="small" sx={{ color: '#ADADAD' }}><ImageIcon size={16} /></IconButton> */}
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 1 }}>
             <InputBase
@@ -273,6 +273,18 @@ const ChatArea = () => {
             </IconButton>
           </Box>
         </Paper>
+        <Typography 
+          variant="caption" 
+          sx={{ 
+            display: 'block', 
+            textAlign: 'center', 
+            color: '#666', 
+            fontSize: '0.7rem',
+            mt: 0.5
+          }}
+        >
+          © copyright amilasilva88
+        </Typography>
       </Box>
     </Box>
   );

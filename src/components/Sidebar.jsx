@@ -56,12 +56,12 @@ const Sidebar = () => {
       ))}
 
       <Box sx={{ mt: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-        <IconButton sx={{ color: '#ADADAD' }}>
+        {/* <IconButton sx={{ color: '#ADADAD' }}>
           <Plus size={24} />
-        </IconButton>
-        <IconButton sx={{ color: '#ADADAD' }}>
+        </IconButton> */}
+        {/* <IconButton sx={{ color: '#ADADAD' }}>
           <MoreHorizontal size={24} />
-        </IconButton>
+        </IconButton> */}
         <Avatar 
           sx={{ 
             width: 32, 
@@ -71,7 +71,7 @@ const Sidebar = () => {
             cursor: 'pointer'
           }}
         >
-          AU
+          AS
         </Avatar>
       </Box>
     </Box>
